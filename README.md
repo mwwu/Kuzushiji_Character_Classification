@@ -11,7 +11,7 @@ Note: the KKanji set is incomplete at the moment. Download it yourself via downl
 
 TODO:
 - write code to clean the KKanji set and make it into usable input data
-- get tensorboard working on every computer
+- get tensorboard working on every computer http://fizzylogic.nl/2017/05/08/monitor-progress-of-your-keras-based-neural-network-using-tensorboard/
 - understand basic model ability and capacity
 - define features to be extracted
 - find pages to translate, with translated labels
