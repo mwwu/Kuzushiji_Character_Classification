@@ -2,6 +2,8 @@ import numpy as np
 from keras.models import Model
 from keras.layers import Input, Dense
 from keras import metrics
+from keras.callbacks import TensorBoard
+import datetime
 import keras
 import matplotlib.pyplot as plt
 
@@ -40,13 +42,20 @@ test_labels = keras.utils.to_categorical(test_labels, classes)
 #  783 |              | 9
 
 inputs = Input(shape=(784,))
-hidden = Dense(28, activation='sigmoid')(inputs)
+hidden = Dense(140, activation='relu')(inputs) #28*5
+hidden = Dense(112, activation='relu')(hidden) #28*4
+hidden = Dense(84, activation='relu')(hidden)  #28*3
+hidden = Dense(56, activation='relu')(hidden)  #28*2
+hidden = Dense(28, activation='relu')(hidden)  #28*1
 prediction = Dense(10, activation='softmax')(hidden)
 
 model = Model(inputs=inputs, outputs=prediction)
 model.compile(loss='categorical_crossentropy', optimizer='sgd', metrics=[metrics.categorical_accuracy])
 model.summary()
-history = model.fit(x=train_imgs, y=train_labels, epochs=10, batch_size=512, verbose=1, validation_split=.1)
+dt = datetime.datetime.now()
+tensorboard = TensorBoard(log_dir="logs/{}".format(dt.strftime("%b_%d_%Y_%I%M%p")), histogram_freq=1, batch_size=512, write_images=1)
+
+history = model.fit(x=train_imgs, y=train_labels, epochs=30, batch_size=512, verbose=0, validation_split=.1, callbacks=[tensorboard])
 loss, accuracy = model.evaluate(test_imgs, test_labels)
 plt.plot(history.history['categorical_accuracy'])
 plt.plot(history.history['val_categorical_accuracy'])
