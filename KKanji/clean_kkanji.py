@@ -3,6 +3,6 @@ import os
 base_dir = "kkanji2"
 
 for dirName, subdirList, fileList in os.walk(base_dir):
-    print('Found directory: %s' % dirName) # labels
-    # for fname in fileList:
-    #     print('\t%s' % fname) # actual files for data
+    print(dirName[10:]) # labels
+    for fname in fileList:
+         print('\t%s -> %s' % (open(dirName + "\\" +  fname), dirName[10:])) # actual files for data

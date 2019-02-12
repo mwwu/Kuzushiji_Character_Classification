@@ -1,6 +1,7 @@
 import numpy as np
+import tensorflow
 from keras.models import Model
-from keras.layers import Input, Dense
+from keras.layers import Input, Dense, Conv2D, GlobalAveragePooling1D
 from keras import metrics
 import keras
 import matplotlib.pyplot as plt
@@ -39,13 +40,16 @@ test_labels = keras.utils.to_categorical(test_labels, classes)
 #  .   |              | .
 #  783 |              | 9
 
-inputs = Input(shape=(784,))
-hidden = Dense(28, activation='sigmoid')(inputs)
+inputs = Input(shape=(28,28))
+hidden = Conv2D(2, (3, 3), 2, padding="valid", activation='relu')(inputs)
+hidden = GlobalAveragePooling1D()(hidden)
+hidden = Dense(28, activation='sigmoid')(hidden)
 prediction = Dense(10, activation='softmax')(hidden)
 
 model = Model(inputs=inputs, outputs=prediction)
-model.compile(loss='categorical_crossentropy', optimizer='sgd', metrics=[metrics.categorical_accuracy])
+model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.SGD(lr=0.1), metrics='accuracy')
 model.summary()
+exit(0)
 history = model.fit(x=train_imgs, y=train_labels, epochs=10, batch_size=512, verbose=1, validation_split=.1)
 loss, accuracy = model.evaluate(test_imgs, test_labels)
 plt.plot(history.history['categorical_accuracy'])
