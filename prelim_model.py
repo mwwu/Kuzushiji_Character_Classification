@@ -59,19 +59,18 @@ test_labels = keras.utils.to_categorical(test_labels, classes)
 model = Sequential()
 
 #CONV LAYERS BEGIN
-model.add(Conv2D(10, kernel_size=(3,5), padding="same", input_shape=(28,28,1), activation = 'relu'))
+model.add(Conv2D(4, kernel_size=(7,7), padding="valid", input_shape=(28,28,1), activation = 'relu'))
 model.add(AveragePooling2D(pool_size=(2,2), strides=(2,2)))
 
-model.add(Conv2D(10, kernel_size=(5,3), padding="same", activation = 'relu'))
+model.add(Conv2D(4, kernel_size=(7,7), padding="same", activation = 'relu'))
 model.add(AveragePooling2D(pool_size=(2,2), strides=(2,2)))
 
-model.add(Conv2D(30, kernel_size=(5,5), padding="same", activation='relu'))
-model.add(Conv2D(70, kernel_size=(5,5), padding="same", activation='relu'))
+model.add(Conv2D(10, kernel_size=(5,5), padding="same", activation='relu'))
+model.add(Conv2D(20, kernel_size=(5,5), padding="same", activation='relu'))
 model.add(AveragePooling2D(pool_size=(2,2), strides=(2,2)))
 
-model.add(Conv2D(90, kernel_size=(3,3), padding="same", activation='relu'))
-model.add(Conv2D(120, kernel_size=(3,3), padding="same", activation='relu'))
-model.add(Conv2D(400, kernel_size=(3,3), padding="same", activation='relu'))
+model.add(Conv2D(40, kernel_size=(3,3), padding="same", activation='relu'))
+model.add(Conv2D(70, kernel_size=(1,1), padding="same", activation='relu'))
 model.add(AveragePooling2D(pool_size=(2,2), strides=(2,2)))
 # CONV LAYERS END
 model.add(Flatten())
@@ -84,7 +83,7 @@ model.add(Dense(units=classes, activation='softmax'))
 
 model.compile(loss='categorical_crossentropy', optimizer='sgd', metrics=[metrics.categorical_accuracy])
 model.summary()
-history = model.fit(x=train_imgs, y=train_labels, epochs=40, batch_size=128, verbose=1, validation_split=.1)
+history = model.fit(x=train_imgs, y=train_labels, epochs=5, batch_size=64, verbose=1, validation_split=.1)
 loss, accuracy = model.evaluate(test_imgs, test_labels)
 plt.plot(history.history['categorical_accuracy'])
 plt.plot(history.history['val_categorical_accuracy'])
