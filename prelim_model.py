@@ -41,7 +41,8 @@ print("Training imgs and labels loaded.")
 # for i in range(0, len(xtest_imgs)):
 #         test_imgs[i]=xtest_imgs[i].ravel()
 
-
+train_imgs = xtrain_imgs.reshape(xtrain_imgs.shape[0], 28, 28, 1).astype('float32')
+test_imgs = xtest_imgs.reshape(xtest_imgs.shape[0], 28, 28, 1).astype('float32')
 train_labels = keras.utils.to_categorical(train_labels, classes)
 test_labels = keras.utils.to_categorical(test_labels, classes)
 
@@ -83,14 +84,14 @@ model.add(Dense(units=classes, activation='softmax'))
 
 model.compile(loss='categorical_crossentropy', optimizer='sgd', metrics=[metrics.categorical_accuracy])
 model.summary()
-history = model.fit(x=xtrain_imgs, y=train_labels, epochs=40, batch_size=128, verbose=1, validation_split=.1)
-loss, accuracy = model.evaluate(xtest_imgs, test_labels)
+history = model.fit(x=train_imgs, y=train_labels, epochs=40, batch_size=128, verbose=1, validation_split=.1)
+loss, accuracy = model.evaluate(test_imgs, test_labels)
 plt.plot(history.history['categorical_accuracy'])
 plt.plot(history.history['val_categorical_accuracy'])
 plt.title('model accuracy')
 plt.ylabel('categorical_accuracy')
 plt.xlabel('epoch')
 plt.legend(['training', 'validation'], loc='best')
-plt.show()
 print("Test loss:", loss)
 print("Test accuracy:", accuracy)
+plt.show()
