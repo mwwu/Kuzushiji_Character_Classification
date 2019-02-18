@@ -2,7 +2,7 @@ import numpy as np
 from keras.models import Model, Sequential
 from keras.layers import Input, Dense, Dropout, Flatten
 from keras import metrics
-from keras.layers.convolutional import Conv2D, MaxPooling2D
+from keras.layers.convolutional import Conv2D, AveragePooling2D
 import keras
 import matplotlib.pyplot as plt
 
@@ -59,21 +59,27 @@ model = Sequential()
 
 #CONV LAYERS BEGIN
 model.add(Conv2D(10, kernel_size=(3,5), padding="same", input_shape=(28,28,1), activation = 'relu'))
-model.add(MaxPooling2D(pool_size=(2,2), strides=(2,2)))
+model.add(AveragePooling2D(pool_size=(2,2), strides=(2,2)))
 
 model.add(Conv2D(10, kernel_size=(5,3), padding="same", activation = 'relu'))
-model.add(MaxPooling2D(pool_size=(2,2), strides=(2,2)))
+model.add(AveragePooling2D(pool_size=(2,2), strides=(2,2)))
 
 model.add(Conv2D(30, kernel_size=(5,5), padding="same", activation='relu'))
 model.add(Conv2D(70, kernel_size=(5,5), padding="same", activation='relu'))
-model.add(MaxPooling2D(pool_size=(2,2), strides=(2,2)))
+model.add(AveragePooling2D(pool_size=(2,2), strides=(2,2)))
 
 model.add(Conv2D(90, kernel_size=(3,3), padding="same", activation='relu'))
 model.add(Conv2D(120, kernel_size=(3,3), padding="same", activation='relu'))
 model.add(Conv2D(400, kernel_size=(3,3), padding="same", activation='relu'))
-model.add(MaxPooling2D(pool_size=(2,2), strides=(2,2)))
+model.add(AveragePooling2D(pool_size=(2,2), strides=(2,2)))
 # CONV LAYERS END
 model.add(Flatten())
+
+model.add(Dense(units=200, activation='relu'))
+model.add(Dropout(0.1))
+model.add(Dense(units=200, activation='relu'))
+model.add(Dropout(0.1))
+model.add(Dense(units=classes, activation='softmax'))
 
 model.compile(loss='categorical_crossentropy', optimizer='sgd', metrics=[metrics.categorical_accuracy])
 model.summary()
