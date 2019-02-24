@@ -264,3 +264,8 @@ if __name__ == '__main__':
     # example function call
     visualize_layer(model, LAYER_NAME)
     visualize_layer(model, 'conv2d_2')
+    visualize_layer(model, 'conv2d_3')
+    visualize_layer(model, 'conv2d_4')
+    visualize_layer(model, 'conv2d_5')
+    visualize_layer(model, 'conv2d_6')
+    visualize_layer(model, 'conv2d_7')
