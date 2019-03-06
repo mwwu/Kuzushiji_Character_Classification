@@ -2,7 +2,15 @@
 Making our own custom Keras Layers 
 
 Code Source:
+    
+Documentation
 https://keras.io/layers/writing-your-own-keras-layers/
+
+CNN with Keras
+https://www.kaggle.com/moghazy/guide-to-cnns-with-data-augmentation-keras?fbclid=IwAR1F8W5KumYggRCsd20-1gEEFDMscmWuAO_yWWMdIJD1QXjybFmMoibTtR4
+
+Resnet Based from:
+https://github.com/raghakot/keras-resnet/blob/master/resnet.py?fbclid=IwAR2YfX6TO1HXrPcFDLNXuPJOnUBLFDi36hmErRB_T7DOoIY-z3RBVXJf9RU
 '''
 
 from keras import backend as K
