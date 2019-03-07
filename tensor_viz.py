@@ -260,12 +260,15 @@ if __name__ == '__main__':
     # vgg = vgg16.VGG16(weights='imagenet', include_top=False)
     # print('Model loaded.')
     # vgg.summary()
+
     model = load_model('test_model_viz.h5')
-    # example function call
-    visualize_layer(model, LAYER_NAME)
-    visualize_layer(model, 'conv2d_2')
-    visualize_layer(model, 'conv2d_3')
-    visualize_layer(model, 'conv2d_4')
-    visualize_layer(model, 'conv2d_5')
-    visualize_layer(model, 'conv2d_6')
-    visualize_layer(model, 'conv2d_7')
+    layer_dict = dict([(layer.name, layer) for layer in model.layers[:]])
+
+    # visualize_layer(model, LAYER_NAME)
+    # visualize_layer(model, 'conv2d_2')
+    # visualize_layer(model, 'conv2d_3')
+    # visualize_layer(model, 'conv2d_4')
+    # visualize_layer(model, 'conv2d_5')
+    # visualize_layer(model, 'conv2d_6')
+    # visualize_layer(model, 'conv2d_7')
+    visualize_layer(model, 'conv2d_8')

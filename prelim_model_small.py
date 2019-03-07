@@ -2,7 +2,7 @@ import numpy as np
 from keras.models import Model, Sequential
 from keras.layers import Input, Dense, Dropout, Flatten
 from keras import metrics
-from keras.layers.convolutional import Conv2D, AveragePooling2D
+from keras.layers.convolutional import Conv2D, AveragePooling2D, MaxPooling2D
 import keras
 from keras.callbacks import TensorBoard as TBCallback
 import matplotlib.pyplot as plt
@@ -62,24 +62,26 @@ test_labels = keras.utils.to_categorical(test_labels, classes)
 model = Sequential()
 
 #CONV LAYERS BEGIN
-model.add(Conv2D(10, kernel_size=(3,5), padding="same", input_shape=(28,28,1), activation = 'relu'))
+model.add(Conv2D(40, kernel_size=(5,5), padding="valid", input_shape=(28,28,1), activation = 'relu'))
+model.add(Conv2D(40, kernel_size=(5,5), padding="valid", activation = 'relu'))
+model.add(AveragePooling2D(pool_size=(2,2), strides=(2,2)))
+#
+model.add(Conv2D(50, kernel_size=(3,3), padding="same", activation='relu'))
+model.add(Conv2D(60, kernel_size=(3,3), padding="same", activation='relu'))
 model.add(AveragePooling2D(pool_size=(2,2), strides=(2,2)))
 
-model.add(Conv2D(10, kernel_size=(5,3), padding="same", activation = 'relu'))
+model.add(Conv2D(70, kernel_size=(5,5), padding="same", activation='relu'))
+model.add(Conv2D(80, kernel_size=(3,3), padding="same", activation='relu'))
+model.add(Conv2D(90, kernel_size=(1,1), padding="valid", activation='relu'))
 model.add(AveragePooling2D(pool_size=(2,2), strides=(2,2)))
-#
-# model.add(Conv2D(30, kernel_size=(5,5), padding="same", activation='relu'))
-# model.add(Conv2D(40, kernel_size=(5,5), padding="same", activation='relu'))
-# model.add(AveragePooling2D(pool_size=(2,2), strides=(2,2)))
-#
-# model.add(Conv2D(30, kernel_size=(3,3), padding="same", activation='relu'))
-# model.add(Conv2D(40, kernel_size=(3,3), padding="same", activation='relu'))
-# model.add(Conv2D(50, kernel_size=(3,3), padding="same", activation='relu'))
-# model.add(AveragePooling2D(pool_size=(2,2), strides=(2,2)))
+
+model.add(Conv2D(150, kernel_size=(3,3), padding="same", activation='relu'))
+model.add(MaxPooling2D())
 # CONV LAYERS END
 model.add(Flatten())
-
-model.add(Dense(units=50, activation='relu'))
+model.add(Dense(units=200, activation='relu'))
+model.add(Dropout(0.2))
+model.add(Dense(units=200, activation='relu'))
 model.add(Dropout(0.1))
 model.add(Dense(units=classes, activation='softmax'))
 
@@ -87,8 +89,8 @@ model.compile(loss='categorical_crossentropy', optimizer='sgd', metrics=[metrics
 model.summary()
 now = datetime.datetime.now()
 logdir = f"logs/%d-%d-%d-%d" %(now.month, now.day, now.hour, now.minute)
-history = model.fit(x=train_imgs, y=train_labels, epochs=1, batch_size=512, verbose=1, validation_split=.1,
-                    callbacks=[TBCallback(log_dir=logdir, write_images=1, histogram_freq=1, batch_size=512, update_freq=10000)])
+history = model.fit(x=train_imgs, y=train_labels, epochs=15, batch_size=128, verbose=1, validation_split=.1,
+                    callbacks=[TBCallback(log_dir=logdir, update_freq=10000)])
 model.save('test_model_viz.h5')
 loss, accuracy = model.evaluate(test_imgs, test_labels)
 plt.plot(history.history['categorical_accuracy'])
