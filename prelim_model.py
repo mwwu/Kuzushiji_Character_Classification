@@ -113,7 +113,7 @@ otherwise use bottleneck.
 
 basick/bottleneck size defined at the end of resnet.py
 '''
-model = ResnetBuilder.build_resnet_50((3, 224, 224), 100)
+model = ResnetBuilder.build_resnet_50((1, 28, 28), 49)
 #original
 model.compile(loss='categorical_crossentropy', optimizer='sgd', metrics=[metrics.categorical_accuracy])
 
