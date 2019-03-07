@@ -6,16 +6,31 @@ from keras import metrics
 import keras
 import matplotlib.pyplot as plt
 
-with np.load("KMNIST/kmnist-test-imgs.npz") as data:
-        xtest_imgs = data['arr_0']
-with np.load("KMNIST/kmnist-test-labels.npz") as data:
-        test_labels = data['arr_0']
-print("Test imgs and labels loaded.")
-with np.load("KMNIST/kmnist-train-imgs.npz") as data:
-        xtrain_imgs = data['arr_0']
-with np.load("KMNIST/kmnist-train-labels.npz") as data:
-        train_labels = data['arr_0']
-print("Training imgs and labels loaded.")
+# with np.load("KMNIST/kmnist-test-imgs.npz") as data:
+#         xtest_imgs = data['arr_0']
+# with np.load("KMNIST/kmnist-test-labels.npz") as data:
+#         test_labels = data['arr_0']
+# print("Test imgs and labels loaded.")
+# with np.load("KMNIST/kmnist-train-imgs.npz") as data:
+#         xtrain_imgs = data['arr_0']
+# with np.load("KMNIST/kmnist-train-labels.npz") as data:
+#         train_labels = data['arr_0']
+# print("Training imgs and labels loaded.")
+
+with np.load("KKanji/kkanji-imgs.npz") as data:
+        imgs = data['arr_0']
+with np.load("KKanji/kkanji-labels.npz") as data:
+        labels = data['arr_0']
+with np.load("KKanji/kkanji-unique-labels.npz") as data:
+        unique_labels = data['arr_0']
+print("imgs and labels loaded.")
+plt.hist(labels, bins=range(0, len(unique_labels)))
+plt.show()
+exit(0)
+
+train_imgs = xtrain_imgs.reshape(xtrain_imgs.shape[0], 28, 28, 1).astype('float32')
+test_imgs = xtest_imgs.reshape(xtest_imgs.shape[0], 28, 28, 1).astype('float32')
+
 
 # Data Preprocessing
 train_imgs = np.ndarray(shape=(len(xtrain_imgs), 784))
