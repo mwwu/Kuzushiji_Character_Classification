@@ -14,8 +14,11 @@ from keras.callbacks import TensorBoard as TBCallback
 #from keras import backend as K
 #from keras.layers import Layer
 # Added class to identify single and double layer 
-from keras_layer import single_layer
-from keras_layer import double_layer
+#from keras_layer import single_layer
+#from keras_layer import double_layer
+
+# Importing resnet.py made by raghakot
+from resnet import ResnetBuilder
 
 
 # UNCOMMENT BELOW FOR KMNIST
@@ -70,6 +73,7 @@ test_labels = keras.utils.to_categorical(test_labels, classes)
 #  783 |              | 9
 model = Sequential()
 
+'''
 #CONV LAYERS BEGIN
 model.add(Conv2D(10, kernel_size=(3,5), padding="same", input_shape=(28,28,1), activation = 'relu'))
 model.add(AveragePooling2D(pool_size=(2,2), strides=(2,2)))
@@ -98,12 +102,31 @@ model.add(Dropout(0.1))
 model.add(Dense(units=classes, activation='softmax'))
 
 model.compile(loss='categorical_crossentropy', optimizer='sgd', metrics=[metrics.categorical_accuracy])
+'''
+
+'''
+Implement ResNet instead of Convolutional Model
+ResnetBuilder function has everything.
+
+basic_block for < 50 layers (thesis)
+otherwise use bottleneck.
+
+basick/bottleneck size defined at the end of resnet.py
+'''
+model = ResnetBuilder.build_resnet_50((3, 224, 224), 100)
+#original
+model.compile(loss='categorical_crossentropy', optimizer='sgd', metrics=[metrics.categorical_accuracy])
+
+#From GitHub
+#model.compile(loss="categorical_crossentropy", optimizer="sgd")
+
 model.summary()
 # what I did to test epoch for last progress report
-#history = model.fit(x=train_imgs, y=train_labels, epochs=5, batch_size=16, verbose=1, validation_split=.1)
+history = model.fit(x=train_imgs, y=train_labels, epochs=5, batch_size=16, verbose=1, validation_split=.1)
 
 '''
 Objective: Build a Keras Layer
+'''
 '''
 # using custom layer from keras_layer
 # Fix argument value. Maybe fix how layers are made in keras_layer.py
@@ -117,6 +140,7 @@ history = model.fit(x=train_imgs, y=train_labels, epochs=3, batch_size=128, verb
         callbacks=[TBCallback(log_dir=logdir)])
 #history = model.fit(x=train_imgs, y=train_labels, epochs=10, batch_size=128, verbose=1, validation_split=.1,
 #        callbacks=[TBCallback(log_dir=logdir)])
+'''
 
 loss, accuracy = model.evaluate(test_imgs, test_labels)
 plt.plot(history.history['categorical_accuracy'])
