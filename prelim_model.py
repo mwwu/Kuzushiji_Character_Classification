@@ -10,6 +10,13 @@ import matplotlib.pyplot as plt
 import datetime
 from keras.callbacks import TensorBoard as TBCallback
 
+# Layer imports
+#from keras import backend as K
+#from keras.layers import Layer
+# Added class to identify single and double layer 
+#from keras_layer import single_layer
+#from keras_layer import double_layer
+
 # Importing resnet.py made by raghakot
 from resnet import ResnetBuilder
 
@@ -100,7 +107,20 @@ model.add(Dense(units=classes, activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer='sgd', metrics=[metrics.categorical_accuracy])
 '''
 
+<<<<<<< HEAD
 model = ResnetBuilder.build_resnet_18((1, 28, 28), 49)
+=======
+'''
+Implement ResNet instead of Convolutional Model
+ResnetBuilder function has everything.
+
+basic_block for < 50 layers (thesis)
+otherwise use bottleneck.
+
+basick/bottleneck size defined at the end of resnet.py
+'''
+model = ResnetBuilder.build_resnet_50((1, 28, 28), classes)
+>>>>>>> 620b1a8a97ffebdb30b5de85a16e1136ecdcf1d6
 #original
 model.compile(loss='categorical_crossentropy', optimizer='sgd', metrics=[metrics.categorical_accuracy])
 
@@ -110,6 +130,24 @@ model.compile(loss='categorical_crossentropy', optimizer='sgd', metrics=[metrics
 model.summary()
 # what I did to test epoch for last progress report
 history = model.fit(x=train_imgs, y=train_labels, epochs=5, batch_size=16, verbose=1, validation_split=.1)
+
+'''
+Objective: Build a Keras Layer
+'''
+'''
+# using custom layer from keras_layer
+# Fix argument value. Maybe fix how layers are made in keras_layer.py
+singleX = single_layer( Conv2D(10, kernel_size=(3,5), padding="same", input_shape=(28,28,1), activation = 'relu') )
+
+# new. 
+now = datetime.datetime.now()
+logdir = f"logs/%d-%d-%d-%d" %(now.month, now.day, now.hour, now.minute)
+#For test purpose, use 3 epochs only
+history = model.fit(x=train_imgs, y=train_labels, epochs=3, batch_size=128, verbose=1, validation_split=.1,
+        callbacks=[TBCallback(log_dir=logdir)])
+#history = model.fit(x=train_imgs, y=train_labels, epochs=10, batch_size=128, verbose=1, validation_split=.1,
+#        callbacks=[TBCallback(log_dir=logdir)])
+'''
 
 loss, accuracy = model.evaluate(test_imgs, test_labels)
 plt.plot(history.history['categorical_accuracy'])
