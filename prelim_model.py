@@ -5,21 +5,9 @@ from keras import metrics
 from keras.layers.convolutional import Conv2D, AveragePooling2D
 import keras
 import matplotlib.pyplot as plt
-
 # New imports
 import datetime
 from keras.callbacks import TensorBoard as TBCallback
-
-# Layer imports
-#from keras import backend as K
-#from keras.layers import Layer
-# Added class to identify single and double layer 
-#from keras_layer import single_layer
-#from keras_layer import double_layer
-
-# Importing resnet.py made by raghakot
-from resnet import ResnetBuilder
-
 # custom resnet.py
 from my_resnet import ResNet 
 
@@ -75,49 +63,6 @@ test_labels = keras.utils.to_categorical(test_labels, classes)
 #  .   |              | .
 #  783 |              | 9
 model = Sequential()
-
-'''
-#CONV LAYERS BEGIN
-model.add(Conv2D(10, kernel_size=(3,5), padding="same", input_shape=(28,28,1), activation = 'relu'))
-model.add(AveragePooling2D(pool_size=(2,2), strides=(2,2)))
-
-model.add(Conv2D(10, kernel_size=(5,3), padding="same", activation = 'relu'))
-model.add(AveragePooling2D(pool_size=(2,2), strides=(2,2)))
-
-# 1/10 conv2d
-model.add(Conv2D(3, kernel_size=(5,5), padding="same", activation='relu'))
-model.add(Conv2D(7, kernel_size=(5,5), padding="same", activation='relu'))
-model.add(AveragePooling2D(pool_size=(2,2), strides=(2,2)))
-
-# 1/10 conv2d
-model.add(Conv2D(9, kernel_size=(3,3), padding="same", activation='relu'))
-model.add(Conv2D(12, kernel_size=(3,3), padding="same", activation='relu'))
-model.add(Conv2D(40, kernel_size=(3,3), padding="same", activation='relu'))
-model.add(AveragePooling2D(pool_size=(2,2), strides=(2,2)))
-# CONV LAYERS END
-model.add(Flatten())
-
-#1/4 dense unit
-model.add(Dense(units=50, activation='relu'))
-model.add(Dropout(0.1))
-#model.add(Dense(units=200, activation='relu'))
-#model.add(Dropout(0.1))
-model.add(Dense(units=classes, activation='softmax'))
-
-model.compile(loss='categorical_crossentropy', optimizer='sgd', metrics=[metrics.categorical_accuracy])
-'''
-
-'''
-Implement ResNet instead of Convolutional Model
-ResnetBuilder function has everything.
-
-basic_block for < 50 layers (thesis)
-otherwise use bottleneck.
-
-basick/bottleneck size defined at the end of resnet.py
-'''
-#previous github implementation
-#model = ResnetBuilder.build_resnet_50((1, 28, 28), classes)
 
 # new tutorial implementation
 stages = [3,4,6]
