@@ -89,7 +89,7 @@ class ResNet:
             inputShape = (height, width, depth)
             chanDim = -1
 
-            # if "channel first), update input shape & channel dim
+            # if "channel first", update input shape & channel dim
             if K.image_data_format() == "channels_first":
                 inputShape = (depth, height, width)
                 chanDim = 1
@@ -105,7 +105,7 @@ class ResNet:
             x = BatchNormalization(axis=chanDim, epsilon=bnEps,
                     momentum=bnMom)(x)
             x = Activation("relu")(x)
-            x = ZeroPadding2D((1,1))(x)
+            #x = ZeroPadding2D((1,1))(x)
             x = MaxPooling2D((3,3), strides=(2,2))(x)
             
             #reduce input volume 
