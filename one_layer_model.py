@@ -1,9 +1,11 @@
 import numpy as np
 import tensorflow
 from keras.models import Model
-from keras.layers import Input, Dense, Conv2D, GlobalAveragePooling1D
+from keras.models import Sequential
+from keras.layers import Input, Dense, Conv2D, AveragePooling2D, Flatten
 from keras import metrics
 import keras
+from sklearn import model_selection
 import matplotlib.pyplot as plt
 
 # with np.load("KMNIST/kmnist-test-imgs.npz") as data:
@@ -24,25 +26,15 @@ with np.load("KKanji/kkanji-labels.npz") as data:
 with np.load("KKanji/kkanji-unique-labels.npz") as data:
         unique_labels = data['arr_0']
 print("imgs and labels loaded.")
-plt.hist(labels, bins=range(0, len(unique_labels)))
-plt.show()
-exit(0)
+hist = np.histogram(labels, bins=range(0, len(unique_labels)), density=True)
+class_weights = hist[0]
+# this is to get the weights of each class in the overall 3.8
+imgs = imgs.reshape(imgs.shape[0], 64, 64, 1).astype('float32')
+imgs_train, imgs_test, labels_train, labels_test = model_selection.train_test_split(imgs, labels, test_size=0.1)
+classes = len(unique_labels)
 
-train_imgs = xtrain_imgs.reshape(xtrain_imgs.shape[0], 28, 28, 1).astype('float32')
-test_imgs = xtest_imgs.reshape(xtest_imgs.shape[0], 28, 28, 1).astype('float32')
-
-
-# Data Preprocessing
-train_imgs = np.ndarray(shape=(len(xtrain_imgs), 784))
-test_imgs = np.ndarray(shape=(len(xtest_imgs), 784))
-for i in range(0, len(xtrain_imgs)):
-        train_imgs[i]=xtrain_imgs[i].ravel()
-for i in range(0, len(xtest_imgs)):
-        test_imgs[i]=xtest_imgs[i].ravel()
-classes = 10
-
-train_labels = keras.utils.to_categorical(train_labels, classes)
-test_labels = keras.utils.to_categorical(test_labels, classes)
+labels_train = keras.utils.to_categorical(labels_train, num_classes=classes)
+labels_test = keras.utils.to_categorical(labels_test, num_classes=classes)
 
 
 # All arrays are saved as ndarrays
@@ -54,19 +46,17 @@ test_labels = keras.utils.to_categorical(test_labels, classes)
 #  .   |              | .
 #  .   |              | .
 #  783 |              | 9
+model = Sequential()
 
-inputs = Input(shape=(28,28))
-hidden = Conv2D(2, (3, 3), 2, padding="valid", activation='relu')(inputs)
-hidden = GlobalAveragePooling1D()(hidden)
-hidden = Dense(28, activation='sigmoid')(hidden)
-prediction = Dense(10, activation='softmax')(hidden)
+model.add(Conv2D(12, kernel_size=(3,3), padding="same", activation='relu', input_shape=(64,64,1)))
+model.add(AveragePooling2D(pool_size=(2,2), strides=(2,2)))
+model.add(Flatten())
+model.add(Dense(units=classes, activation='softmax'))
 
-model = Model(inputs=inputs, outputs=prediction)
-model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.SGD(lr=0.1), metrics='accuracy')
+model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.SGD(lr=0.1), metrics=['accuracy'])
 model.summary()
-exit(0)
-history = model.fit(x=train_imgs, y=train_labels, epochs=10, batch_size=512, verbose=1, validation_split=.1)
-loss, accuracy = model.evaluate(test_imgs, test_labels)
+history = model.fit(x=imgs_train, y=labels_train, epochs=10, batch_size=512, verbose=1, validation_split=.1)
+loss, accuracy = model.evaluate(imgs_test, labels_test)
 plt.plot(history.history['categorical_accuracy'])
 plt.plot(history.history['val_categorical_accuracy'])
 plt.title('model accuracy')
