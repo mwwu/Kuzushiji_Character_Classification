@@ -21,7 +21,7 @@ from keras.callbacks import TensorBoard as TBCallback
 from resnet import ResnetBuilder
 
 # custom resnet.py
-from my_resnet import Resnet 
+from my_resnet import ResNet 
 
 
 # UNCOMMENT BELOW FOR KMNIST
@@ -107,9 +107,6 @@ model.add(Dense(units=classes, activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer='sgd', metrics=[metrics.categorical_accuracy])
 '''
 
-<<<<<<< HEAD
-model = ResnetBuilder.build_resnet_18((1, 28, 28), 49)
-=======
 '''
 Implement ResNet instead of Convolutional Model
 ResnetBuilder function has everything.
@@ -120,7 +117,6 @@ otherwise use bottleneck.
 basick/bottleneck size defined at the end of resnet.py
 '''
 model = ResnetBuilder.build_resnet_50((1, 28, 28), classes)
->>>>>>> 620b1a8a97ffebdb30b5de85a16e1136ecdcf1d6
 #original
 model.compile(loss='categorical_crossentropy', optimizer='sgd', metrics=[metrics.categorical_accuracy])
 
