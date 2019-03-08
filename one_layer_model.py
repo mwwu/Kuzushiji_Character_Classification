@@ -26,6 +26,7 @@ with np.load("KKanji/kkanji-labels.npz") as data:
 with np.load("KKanji/kkanji-unique-labels.npz") as data:
         unique_labels = data['arr_0']
 print("imgs and labels loaded.")
+
 hist = np.histogram(labels, bins=range(0, len(unique_labels)), density=True)
 class_weights = hist[0]
 # this is to get the weights of each class in the overall 3.8
@@ -37,15 +38,6 @@ labels_train = keras.utils.to_categorical(labels_train, num_classes=classes)
 labels_test = keras.utils.to_categorical(labels_test, num_classes=classes)
 
 
-# All arrays are saved as ndarrays
-# Input: 28x28 grayscale images each with value 0-255
-# Output: Probability of image being one of 10 classes.
-#  0   | Hidden Layer | 0
-#  1   |              | 1
-#  2   |              | 2
-#  .   |              | .
-#  .   |              | .
-#  783 |              | 9
 model = Sequential()
 
 model.add(Conv2D(12, kernel_size=(3,3), padding="same", activation='relu', input_shape=(64,64,1)))
@@ -55,7 +47,7 @@ model.add(Dense(units=classes, activation='softmax'))
 
 model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.SGD(lr=0.1), metrics=['accuracy'])
 model.summary()
-history = model.fit(x=imgs_train, y=labels_train, epochs=10, batch_size=512, verbose=1, validation_split=.1)
+history = model.fit(x=imgs_train, y=labels_train, epochs=10, batch_size=512, verbose=1, validation_split=.1, class_weight=class_weights)
 loss, accuracy = model.evaluate(imgs_test, labels_test)
 plt.plot(history.history['categorical_accuracy'])
 plt.plot(history.history['val_categorical_accuracy'])
