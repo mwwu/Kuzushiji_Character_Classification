@@ -13,6 +13,9 @@ from keras.callbacks import TensorBoard as TBCallback
 # Importing resnet.py made by raghakot
 from resnet import ResnetBuilder
 
+# custom resnet.py
+from my_resnet import Resnet 
+
 
 # UNCOMMENT BELOW FOR KMNIST
 # KMNIST LOADING
@@ -97,7 +100,7 @@ model.add(Dense(units=classes, activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer='sgd', metrics=[metrics.categorical_accuracy])
 '''
 
-model = ResnetBuilder.build_resnet_50((3, 224, 224), 100)
+model = ResnetBuilder.build_resnet_18((1, 28, 28), 49)
 #original
 model.compile(loss='categorical_crossentropy', optimizer='sgd', metrics=[metrics.categorical_accuracy])
 
