@@ -44,20 +44,20 @@ class ResNet:
             bn1 = BatchNormalization(axis=chanDim, epsilon=bnEps, momentum=bnMom)(data)
             act1 = Activation("relu")(bn1)
             conv1 = Conv2D(int(K*0.25), (1,1), use_bias=False,
-                    kernel_regularizer=12(reg))(act1)
+                    kernel_regularizer=l2(reg))(act1)
 
             # second block of ResNet: 3x3 Convs, K/4
             # conv1->bn2->act2->conv2
             bn2 = BatchNormalization(axis=chanDim, epsilon=bnEps, momentum=bnMom)(conv1)
             act2 = Activation("relu")(bn2)
             conv2 = Conv2D(int(k*0.25), (3,3), strides=stride, padding="same", use_bias=False,
-                    kernel_regularizer=12(reg))(act2)
+                    kernel_regularizer=l2(reg))(act2)
 
             # third block of ResNet: 1x1 Convs, K/4
             # conv2->bn3->act3->conv3
             bn3 = BatchNormalization(axis=chanDim, epsilon=bnEps, momentum=bnMom)(conv2)
             act3 = Activation("relu")(bn3)
-            conv3 = Conv2D(int(k*0.25), (1,1), use_bias=False, kernel_regularizer=12(reg))(act3)
+            conv3 = Conv2D(int(k*0.25), (1,1), use_bias=False, kernel_regularizer=l2(reg))(act3)
 
 
             '''
@@ -66,7 +66,7 @@ class ResNet:
             #if reducing spatial size, then apply CONV layer to shortcut
             if red:
                 shortcut = Conv2D(k, (1,1), strides=stride, use_bias=False,
-                            kernel_regularizer=12(reg))(act1)
+                            kernel_regularizer=l2(reg))(act1)
 
             # shotcut + final CONV
             resOut = add([conv3, shortcut])
@@ -101,7 +101,7 @@ class ResNet:
 
             # CONV -> BN -> ACT -> POOL. Reduce spatial size
             x = Conv2D(filters[0], (5,5), use_bias=False,
-                    padding="same", kernel_regularizer=12(reg))(x)
+                    padding="same", kernel_regularizer=l2(reg))(x)
             x = BatchNormalization(axis=chanDim, epsilon=bnEps,
                     momentum=bnMom)(x)
             x = Activation("relu")(x)
@@ -130,7 +130,7 @@ class ResNet:
 
             # softmax
             x = Flatten()(x)
-            x = Dense(classes, kernel_regularizer=12(reg))(x)
+            x = Dense(classes, kernel_regularizer=l2(reg))(x)
             x = Activation("softmax")(x)
 
             # create the model

@@ -116,7 +116,14 @@ otherwise use bottleneck.
 
 basick/bottleneck size defined at the end of resnet.py
 '''
-model = ResnetBuilder.build_resnet_50((1, 28, 28), classes)
+#previous github implementation
+#model = ResnetBuilder.build_resnet_50((1, 28, 28), classes)
+
+# new tutorial implementation
+stages = [3,4,6]
+filters = [64, 128, 256, 512]
+model = ResNet.build(1, 28, 28, classes, stages, filters)
+
 #original
 model.compile(loss='categorical_crossentropy', optimizer='sgd', metrics=[metrics.categorical_accuracy])
 
