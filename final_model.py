@@ -25,37 +25,21 @@ labels_train = keras.utils.to_categorical(labels_train, num_classes=classes)
 labels_test = keras.utils.to_categorical(labels_test, num_classes=classes)
 
 
-model = Sequential()
-
-# new tutorial implementation
-stages = [3,4,6]
-filters = [64, 128, 256, 512]
-model = ResNet.build(64, 64, 1, classes, stages, filters)
-
-#original
-model.compile(loss='categorical_crossentropy', optimizer='sgd', metrics=[metrics.categorical_accuracy])
-
-#From GitHub
-#model.compile(loss="categorical_crossentropy", optimizer="sgd")
-
-model.summary()
-# what I did to test epoch for last progress report
-history = model.fit(x=imgs_train, y=labels_train, epochs=1, batch_size=256, verbose=1, validation_split=.1)
-
-'''
-now = datetime.datetime.now()
-logdir = f"logs/%d-%d-%d-%d" %(now.month, now.day, now.hour, now.minute)
-history = model.fit(x=train_imgs, y=train_labels, epochs=3, batch_size=128, verbose=1, validation_split=.1,
-        callbacks=[TBCallback(log_dir=logdir)])
-'''
-
-loss, accuracy = model.evaluate(imgs_test, labels_test)
-plt.plot(history.history['categorical_accuracy'])
-plt.plot(history.history['val_categorical_accuracy'])
-plt.title('model accuracy')
-plt.ylabel('categorical_accuracy')
-plt.xlabel('epoch')
-plt.legend(['training', 'validation'], loc='best')
-print("Test loss:", loss)
-print("Test accuracy:", accuracy)
-plt.show()
+#
+# '''
+# now = datetime.datetime.now()
+# logdir = f"logs/%d-%d-%d-%d" %(now.month, now.day, now.hour, now.minute)
+# history = model.fit(x=train_imgs, y=train_labels, epochs=3, batch_size=128, verbose=1, validation_split=.1,
+#         callbacks=[TBCallback(log_dir=logdir)])
+# '''
+#
+# loss, accuracy = model.evaluate(imgs_test, labels_test)
+# plt.plot(history.history['categorical_accuracy'])
+# plt.plot(history.history['val_categorical_accuracy'])
+# plt.title('model accuracy')
+# plt.ylabel('categorical_accuracy')
+# plt.xlabel('epoch')
+# plt.legend(['training', 'validation'], loc='best')
+# print("Test loss:", loss)
+# print("Test accuracy:", accuracy)
+# plt.show()
