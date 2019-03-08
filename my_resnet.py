@@ -50,14 +50,14 @@ class ResNet:
             # conv1->bn2->act2->conv2
             bn2 = BatchNormalization(axis=chanDim, epsilon=bnEps, momentum=bnMom)(conv1)
             act2 = Activation("relu")(bn2)
-            conv2 = Conv2D(int(k*0.25), (3,3), strides=stride, padding="same", use_bias=False,
+            conv2 = Conv2D(int(K*0.25), (3,3), strides=stride, padding="same", use_bias=False,
                     kernel_regularizer=l2(reg))(act2)
 
             # third block of ResNet: 1x1 Convs, K/4
             # conv2->bn3->act3->conv3
             bn3 = BatchNormalization(axis=chanDim, epsilon=bnEps, momentum=bnMom)(conv2)
             act3 = Activation("relu")(bn3)
-            conv3 = Conv2D(int(k*0.25), (1,1), use_bias=False, kernel_regularizer=l2(reg))(act3)
+            conv3 = Conv2D(K, (1,1), use_bias=False, kernel_regularizer=l2(reg))(act3)
 
 
             '''
@@ -65,7 +65,7 @@ class ResNet:
             '''
             #if reducing spatial size, then apply CONV layer to shortcut
             if red:
-                shortcut = Conv2D(k, (1,1), strides=stride, use_bias=False,
+                shortcut = Conv2D(K, (1,1), strides=stride, use_bias=False,
                             kernel_regularizer=l2(reg))(act1)
 
             # shotcut + final CONV
@@ -121,12 +121,10 @@ class ResNet:
                     x = ResNet.residual_module(x, filters[i+1],
                             (1,1), chanDim, bnEps=bnEps, bnMom=bnMom)
 
-            
             x = BatchNormalization(axis=chanDim, epsilon=bnEps,
                     momentum=bnMom)(x)
             x = Activation("relu")(x)
-            x = AveragePooling2D((8,8))(x)
-
+            x = AveragePooling2D((2,2))(x)
 
             # softmax
             x = Flatten()(x)
