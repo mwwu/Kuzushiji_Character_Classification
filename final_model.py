@@ -14,12 +14,18 @@ with np.load("KKanji/kkanji-unique-labels.npz") as data:
         unique_labels = data['arr_0']
 print("imgs and labels loaded.")
 
+classes = len(unique_labels)
+def invert(x):
+        return 1./x
+
 hist = np.histogram(labels, bins=range(0, len(unique_labels)), density=True)
-class_weights = hist[0]
+# class_weights = np.array(invert(hist[0]))
+plt.hist(labels, bins=range(0, classes))
+plt.show()
 # this is to get the weights of each class in the overall 3.8
 imgs = imgs.reshape(imgs.shape[0], 64, 64, 1).astype('float32')
 imgs_train, imgs_test, labels_train, labels_test = model_selection.train_test_split(imgs, labels, test_size=0.1)
-classes = len(unique_labels)
+
 
 labels_train = keras.utils.to_categorical(labels_train, num_classes=classes)
 labels_test = keras.utils.to_categorical(labels_test, num_classes=classes)
