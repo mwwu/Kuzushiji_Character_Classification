@@ -119,13 +119,13 @@ class SmallResNet:
             for i in range(0, len(stages)):
                 # init stride, apply residual
                 stride = (1,1) if i == 0 else (2,2)
-                x = ResNet.residual_module(x, filters[i+1], stride,
+                x = SmallResNet.residual_module(x, filters[i+1], stride,
                         chanDim, red=True, bnEps=bnEps, bnMom=bnMom)
                 
                 # loop through layers in stage
                 for j in range(0, stages[i] - 1):
                     # apply resnet module
-                    x = ResNet.residual_module(x, filters[i+1],
+                    x = SmallResNet.residual_module(x, filters[i+1],
                             (1,1), chanDim, bnEps=bnEps, bnMom=bnMom)
 
             x = BatchNormalization(axis=chanDim, epsilon=bnEps,

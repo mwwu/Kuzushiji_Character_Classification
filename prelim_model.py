@@ -10,6 +10,8 @@ import datetime
 from keras.callbacks import TensorBoard as TBCallback
 # custom resnet.py
 from my_resnet import ResNet 
+# for resnet34. experimental
+from small_resnet import SmallResNet 
 
 
 # UNCOMMENT BELOW FOR KMNIST
@@ -68,6 +70,9 @@ model = Sequential()
 stages = [3,4,6]
 filters = [64, 128, 256, 512]
 model = ResNet.build(28, 28, 1, classes, stages, filters)
+
+smallModel = SmallResNet.build(34,34,1, classes, stages, filters)
+
 
 #original
 model.compile(loss='categorical_crossentropy', optimizer='sgd', metrics=[metrics.categorical_accuracy])
