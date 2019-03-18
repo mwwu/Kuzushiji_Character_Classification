@@ -15,7 +15,7 @@ from keras.regularizers import l2
 """ 
 _____________________________________________
 
-UNCOMMENT TO USE K49 DATASET
+UNCOMMENT BELOW TO USE K49 DATASET
 _____________________________________________
 
 with np.load("K49/k49-imgs.npz") as data:
@@ -38,7 +38,7 @@ with np.load("KKanji/kkanji-unique-labels.npz") as data:
 """ 
 _____________________________________________
 
-UNCOMMENT TO USE KKANJI DATASET STORED ON GCP
+UNCOMMENT BELOW TO USE KKANJI DATASET STORED ON GCP
 _____________________________________________
 
 f = BytesIO(file_io.read_file_to_string('gs://kuzushiji-classifier/kkanji-imgs.npz', binary_mode=True))
@@ -68,6 +68,7 @@ _____________________________________________
 For K49: Change reshape, input_shape to 28, 28
 For KKanji: Change reshape, input_shape to 64, 64
 _____________________________________________
+
 """
 
 imgs = imgs.reshape(imgs.shape[0], 28, 28, 1).astype('float32')

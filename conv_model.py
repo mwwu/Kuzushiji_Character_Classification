@@ -10,32 +10,47 @@ import datetime
 import tensorboard
 from final_model import imgs_train, imgs_test, labels_train, labels_test, classes, ResNet
 
-# UNCOMMENT BELOW FOR KMNIST
-# KMNIST LOADING
-# classes = 10
-# with np.load("KMNIST/kmnist-test-imgs.npz") as data:
-#         xtest_imgs = data['arr_0']
-# with np.load("KMNIST/kmnist-test-labels.npz") as data:
-#         test_labels = data['arr_0']
-# print("Test imgs and labels loaded.")
-# with np.load("KMNIST/kmnist-train-imgs.npz") as data:
-#         xtrain_imgs = data['arr_0']
-# with np.load("KMNIST/kmnist-train-labels.npz") as data:
-#         train_labels = data['arr_0']
-# print("Training imgs and labels loaded.")
+"""
+_____________________________________________
 
-# K49 LOADING
-# classes = 49
-# with np.load("K49/k49-test-imgs.npz") as data:
-#         xtest_imgs = data['arr_0']
-# with np.load("K49/k49-test-labels.npz") as data:
-#         test_labels = data['arr_0']
-# print("Test imgs and labels loaded.")
-# with np.load("K49/k49-train-imgs.npz") as data:
-#         xtrain_imgs = data['arr_0']
-# with np.load("K49/k49-train-labels.npz") as data:
-#         train_labels = data['arr_0']
-# print("Training imgs and labels loaded.")
+UNCOMMENT BELOW TO USE KMNIST DATASET
+_____________________________________________
+
+classes = 10
+with np.load("KMNIST/kmnist-test-imgs.npz") as data:
+	xtest_imgs = data['arr_0']
+with np.load("KMNIST/kmnist-test-labels.npz") as data:
+	test_labels = data['arr_0']
+print("Test imgs and labels loaded.")
+with np.load("KMNIST/kmnist-train-imgs.npz") as data:
+	xtrain_imgs = data['arr_0']
+with np.load("KMNIST/kmnist-train-labels.npz") as data:
+	train_labels = data['arr_0']
+print("Training imgs and labels loaded.")
+
+"""
+
+
+"""
+_____________________________________________
+
+UNCOMMENT BELOW TO USE K49 DATASET
+_____________________________________________
+classes = 49
+with np.load("K49/k49-test-imgs.npz") as data:
+	xtest_imgs = data['arr_0']
+with np.load("K49/k49-test-labels.npz") as data:
+	test_labels = data['arr_0']
+print("Test imgs and labels loaded.")
+with np.load("K49/k49-train-imgs.npz") as data:
+	xtrain_imgs = data['arr_0']
+with np.load("K49/k49-train-labels.npz") as data:
+	train_labels = data['arr_0']
+print("Training imgs and labels loaded.")
+
+"""
+
+
 
 # Data Preprocessing (unravel the image to a 1D vector)
 # train_imgs = np.ndarray(shape=(len(xtrain_imgs), 784))
@@ -49,6 +64,7 @@ from final_model import imgs_train, imgs_test, labels_train, labels_test, classe
 # test_imgs = xtest_imgs.reshape(xtest_imgs.shape[0], 28, 28, 1).astype('float32')
 # train_labels = keras.utils.to_categorical(train_labels, classes)
 # test_labels = keras.utils.to_categorical(test_labels, classes)
+
 
 
 # All arrays are saved as ndarrays
@@ -89,17 +105,21 @@ model.add(Dense(units=classes, activation='softmax'))
 model.compile(loss='sparse_categorical_crossentropy', optimizer='sgd', metrics=[metrics.sparse_categorical_accuracy])
 model.summary()
 now = datetime.datetime.now()
+
 # logdir = f"logs/%d-%d-%d-%d" %(now.month, now.day, now.hour, now.minute)
 history = model.fit(x=imgs_train, y=labels_train, epochs=15, batch_size=128, verbose=1, validation_split=.1, class_weight=class_weights)
                     # , callbacks=[TBCallback(log_dir=logdir, update_freq=10000)])
 model.save('test_model_viz.h5')
 loss, accuracy = model.evaluate(imgs_test, labels_test)
+
 plt.plot(history.history['sparse_categorical_accuracy'])
 plt.plot(history.history['val_categorical_accuracy'])
 plt.title('model accuracy')
 plt.ylabel('categorical_accuracy')
 plt.xlabel('epoch')
 plt.legend(['training', 'validation'], loc='best')
+
 print("Test loss:", loss)
 print("Test accuracy:", accuracy)
+
 plt.show()
