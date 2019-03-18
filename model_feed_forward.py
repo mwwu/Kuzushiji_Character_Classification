@@ -52,7 +52,7 @@ with np.load(f) as data:
 f = BytesIO(file_io.read_file_to_string('gs://kuzushiji-classifier/kkanji-unique-labels.npz', binary_mode=True))
 with np.load(f) as data:
     unique_labels = data['arr_0']
-    
+
 """
 
 
@@ -62,7 +62,15 @@ print("imgs and labels loaded.")
 hist = np.histogram(labels, bins=range(0, len(unique_labels)), density=True)
 class_weights = hist[0]
 
-imgs = imgs.reshape(imgs.shape[0], 64, 64, 1).astype('float32')
+"""
+_____________________________________________
+
+For K49: Change reshape, input_shape to 28, 28
+For KKanji: Change reshape, input_shape to 64, 64
+_____________________________________________
+"""
+
+imgs = imgs.reshape(imgs.shape[0], 28, 28, 1).astype('float32')
 imgs_train, imgs_test, labels_train, labels_test = model_selection.train_test_split(imgs, labels, test_size=0.1)
 classes = len(unique_labels)
 
