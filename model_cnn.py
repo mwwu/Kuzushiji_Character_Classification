@@ -48,23 +48,21 @@ with np.load("K49/k49-train-labels.npz") as data:
 	train_labels = data['arr_0']
 print("Training imgs and labels loaded.")
 
-"""
-
-
 
 # Data Preprocessing (unravel the image to a 1D vector)
-# train_imgs = np.ndarray(shape=(len(xtrain_imgs), 784))
-# test_imgs = np.ndarray(shape=(len(xtest_imgs), 784))
-# for i in range(0, len(xtrain_imgs)):
-#         train_imgs[i]=xtrain_imgs[i].ravel()
-# for i in range(0, len(xtest_imgs)):
-#         test_imgs[i]=xtest_imgs[i].ravel()
-#
-# train_imgs = xtrain_imgs.reshape(xtrain_imgs.shape[0], 28, 28, 1).astype('float32')
-# test_imgs = xtest_imgs.reshape(xtest_imgs.shape[0], 28, 28, 1).astype('float32')
-# train_labels = keras.utils.to_categorical(train_labels, classes)
-# test_labels = keras.utils.to_categorical(test_labels, classes)
+train_imgs = np.ndarray(shape=(len(xtrain_imgs), 784))
+test_imgs = np.ndarray(shape=(len(xtest_imgs), 784))
+for i in range(0, len(xtrain_imgs)):
+	train_imgs[i]=xtrain_imgs[i].ravel()
+for i in range(0, len(xtest_imgs)):
+	test_imgs[i]=xtest_imgs[i].ravel()
 
+train_imgs = xtrain_imgs.reshape(xtrain_imgs.shape[0], 28, 28, 1).astype('float32')
+test_imgs = xtest_imgs.reshape(xtest_imgs.shape[0], 28, 28, 1).astype('float32')
+train_labels = keras.utils.to_categorical(train_labels, classes)
+test_labels = keras.utils.to_categorical(test_labels, classes)
+
+"""
 
 
 # All arrays are saved as ndarrays
