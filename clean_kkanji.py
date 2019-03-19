@@ -4,7 +4,6 @@ import glob
 import numpy as np
 
 base_dir = "kkanji2"
-#base_dir = "testkanji"
 
 train_imgs = []
 train_labels = []
