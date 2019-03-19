@@ -7,13 +7,49 @@ Dependencies:
 - matplotlib
 - requests
 
-Note: the KKanji set is incomplete at the moment. Download it yourself via download_data.py because Github won't host the tar
 
-TODO:
-- write code to clean the KKanji set and make it into usable input data
-- get tensorboard working on every computer http://fizzylogic.nl/2017/05/08/monitor-progress-of-your-keras-based-neural-network-using-tensorboard/
-- understand basic model ability and capacity https://medium.com/tebs-lab/how-to-classify-mnist-digits-with-different-neural-network-architectures-39c75a0f03e3
-- define features to be extracted
-- find pages to translate, with translated labels
-  - figure out a way to get the pages into clean data
-    - where does a character begin or end?
+# K49 | Feed Forward
+1. vi model_feed_forward.py
+	- uncomment 49 sections, comment kkanji section (see comments in the code)
+	- change image shape for 28x28 (see comments in the code)
+2. python3 model_feed_forward.py
+
+# K49 | CNN
+1. vi model_feed_forward.py
+	- uncomment 49 sections, comment kkanji section (see comments in the code)
+2. python3 model_cnn.py
+
+# K49 | ResNet
+1. vi model_resnet.py
+	- uncomment 49 sections, comment kkanji section (see comments in the code)
+2. python3 model_resnet.py
+
+
+
+# KKanji | Data Preprocessing
+
+We included the processed .npz files of the datasets in their respective folders, so you can skip this step. Otherwise, you can download the original image files from https://www.kaggle.com/anokas/kuzushiji/. It is recommended you run clean_kkanji.py before over or undersampling, because they depend on the npz files clean_kkanji produces.
+
+1. python3 clean_kkanji.py (this extracts the file names, generates labels for each image, and create a .npz from the pngs)
+2. python3 augment_kkanji.py (oversampling with data augmentation)
+3. python3 clean_kkanji.py  (this extracts the file names, generates labels for each image, and create a .npz from the pngs)
+4. python3 reduce_kkanji.py (undersampling with data augmentation)
+
+
+# KKanji | Feed Forward
+1. vi model_feed_forward.py
+	- comment out k49 sections (see comments in the code)
+	- change image shape for 64x64 (see comments in the code)
+2. python3 model_feed_forward.py
+
+# KKanji | CNN
+1. vi model_feed_forward.py
+	- comment out k49 sections (see comments in the code)
+2. python3 model_cnn.py
+
+# KKanji | ResNet
+1. vi model_resnet.py
+	- comment out k49 sections (see comments in the code)
+2. python3 model_resnet.py
+	- we included the output in model_output.txt, because this model takes a few days to train
+
