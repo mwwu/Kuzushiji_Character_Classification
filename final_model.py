@@ -5,6 +5,28 @@ from keras import metrics
 import keras
 from sklearn import model_selection
 import matplotlib.pyplot as plt
+from io import BytesIO
+import tensorflow as tf 
+from tensorflow.python.lib.io import file_io
+
+""" 
+_____________________________________________
+
+UNCOMMENT BELOW TO USE KKANJI DATASET STORED ON GCP
+_____________________________________________
+f = BytesIO(file_io.read_file_to_string('gs://kuzushiji-classifier/kkanji-imgs.npz', binary_mode=True))
+with np.load(f) as data:
+    imgs = data['arr_0']
+
+f = BytesIO(file_io.read_file_to_string('gs://kuzushiji-classifier/kkanji-labels.npz', binary_mode=True))
+with np.load(f) as data:
+    labels = data['arr_0']
+
+f = BytesIO(file_io.read_file_to_string('gs://kuzushiji-classifier/kkanji-unique-labels.npz', binary_mode=True))
+with np.load(f) as data:
+    unique_labels = data['arr_0']
+    
+"""
 
 with np.load("KKanji/kkanji-imgs.npz") as data:
         imgs = data['arr_0']
@@ -12,6 +34,8 @@ with np.load("KKanji/kkanji-labels.npz") as data:
         labels = data['arr_0']
 with np.load("KKanji/kkanji-unique-labels.npz") as data:
         unique_labels = data['arr_0']
+
+
 print("imgs and labels loaded.")
 
 classes = len(unique_labels)
