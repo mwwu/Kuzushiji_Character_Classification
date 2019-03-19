@@ -28,7 +28,7 @@ Dependencies:
 
 # KKanji | Data Preprocessing
 
-We included the processed .npz files of the datasets in their respective folders, so you can skip this step. Otherwise, you can download the original image files from https://www.kaggle.com/anokas/kuzushiji/. It is recommended you run clean_kkanji.py before over or undersampling, because they depend on the npz files clean_kkanji produces.
+We included the processed .npz files of the datasets in their respective folders, so you can skip this step. Otherwise, you run "python3 download_data.py" to get all of the images for KKanji.
 
 1. python3 clean_kkanji.py (this extracts the file names, generates labels for each image, and create a .npz from the pngs)
 2. python3 augment_kkanji.py (oversampling with data augmentation)
